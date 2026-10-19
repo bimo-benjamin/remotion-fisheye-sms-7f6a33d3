@@ -8,6 +8,6 @@ export const RemotionRoot = () => (
     height={1102}
     fps={30}
     durationInFrames={60}
-    defaultProps={{ distortion: 0.19, moire: 0.12, vignette: 0.42 }}
+    defaultProps={{ distortion: 0.42, moire: 0.12, vignette: 0.42 }}
   />
 );

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   AbsoluteFill,
   continueRender,
+  cancelRender,
   delayRender,
   staticFile,
   useCurrentFrame,
@@ -45,45 +46,49 @@ function drawPhone(ctx: CanvasRenderingContext2D, frame: number, fps: number) {
   ctx.save();
   ctx.translate(240, 150);
   ctx.fillStyle = "#111112";
-  ctx.fillRect(-240, -150, 1560, 400);
+  ctx.fillRect(-240, -150, 1560, 355);
   ctx.fillStyle = "#818a96";
   ctx.beginPath();
-  ctx.ellipse(590, 76, 93, 78, 0, 0, Math.PI * 2);
+  ctx.ellipse(590, -34, 130, 95, 0, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = "#e0e2e3";
   ctx.beginPath();
-  ctx.arc(590, 53, 29, 0, Math.PI * 2);
+  ctx.arc(590, -62, 38, 0, Math.PI * 2);
   ctx.fill();
   ctx.beginPath();
-  ctx.ellipse(590, 123, 64, 29, 0, Math.PI, 2 * Math.PI);
+  ctx.ellipse(590, 23, 83, 37, 0, Math.PI, 2 * Math.PI);
   ctx.fill();
   ctx.textAlign = "center";
-  ctx.font = "38px Arial";
+  ctx.font = "56px Arial";
   ctx.fillStyle = "#ddd";
-  ctx.fillText("10688037970779", 590, 217);
+  ctx.save();
+  ctx.translate(590, 155);
+  ctx.scale(1.18, 1);
+  ctx.fillText("10688037970779", 0, 0);
+  ctx.restore();
   ctx.fillStyle = "#666";
   ctx.font = "48px Arial";
-  ctx.fillText("›", 815, 217);
+  ctx.fillText("›", 865, 155);
   ctx.fillStyle = "#087ec1";
   ctx.beginPath();
-  ctx.roundRect(-38, 118, 70, 41, 20);
+  ctx.roundRect(-230, 38, 70, 41, 20);
   ctx.fill();
   ctx.font = "italic 29px Arial";
   ctx.fillStyle = "#95d3f0";
-  ctx.fillText("52", -3, 149);
+  ctx.fillText("52", -195, 69);
   ctx.fillStyle = "#b5b5b8";
   ctx.font = "27px Arial";
-  ctx.fillText("▥  ≋  ▰₃₄", 1010, 3);
+  ctx.fillText("▥  ≋  ▰₃₄", 1220, -150);
   ctx.fillStyle = "#88888b";
-  ctx.font = "44px ReplicaSans";
-  ctx.fillText("信息 · 短信", 590, 340);
-  ctx.fillText("前天 21:07", 590, 394);
+  ctx.font = "48px ReplicaSans";
+  ctx.fillText("信息 · 短信", 590, 320);
+  ctx.fillText("前天 21:07", 590, 374);
   ctx.fillStyle = "#272729";
   ctx.beginPath();
-  ctx.roundRect(-205, 478, 1265, 370, 58);
+  ctx.roundRect(-450, 448, 1700, 500, 68);
   ctx.fill();
   ctx.textAlign = "left";
-  ctx.font = "63px ReplicaSans";
+  ctx.font = "76px ReplicaSans";
   ctx.fillStyle = "#e3e3e5";
   const lines = [
     "【浙江大学】欢迎您在 2026年09月04",
@@ -91,18 +96,18 @@ function drawPhone(ctx: CanvasRenderingContext2D, frame: number, fps: number) {
     "请凭支付宝 “浙大通” 小程序通行码或本人",
     "身份证进入校园。",
   ];
-  const x = -255,
-    y = 557,
-    lineHeight = 86;
+  const x = -300,
+    y = 560,
+    lineHeight = 95;
   // The reference starts revealing the marker at approximately 0.9 seconds.
   const reveal = Math.max(0, Math.min(1, (frame / fps - 0.88) / 0.58));
   const prefix = ctx.measureText("请凭支付宝 “").width;
   ctx.fillStyle = "#d6bd0b";
   ctx.fillRect(
     x + prefix,
-    y + lineHeight * 2 - 65,
+    y + lineHeight * 2 - 78,
     ctx.measureText("浙大").width * reveal,
-    82,
+    96,
   );
   ctx.fillStyle = "#e3e3e5";
   lines.forEach((line, i) => ctx.fillText(line, x, y + i * lineHeight));
@@ -148,8 +153,7 @@ export const Fisheye: React.FC<FisheyeProps> = ({
         continueRender(fontHandle);
       })
       .catch((e) => {
-        console.error(e);
-        continueRender(fontHandle);
+        cancelRender(e);
       });
   }, [fontHandle]);
   useEffect(() => {
