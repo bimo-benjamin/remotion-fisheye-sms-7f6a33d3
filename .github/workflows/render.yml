@@ -1,0 +1,28 @@
+name: Verify and render
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run render -- --concurrency=1 --gl=swangle
+      - run: npm run still -- --gl=swangle
+      - run: npx remotion still src/index.ts FisheyeSMS out/frame-0.png --frame=0 --gl=swangle
+      - run: npx remotion still src/index.ts FisheyeSMS out/frame-59.png --frame=59 --gl=swangle
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fisheye-sms-render
+          path: out/
