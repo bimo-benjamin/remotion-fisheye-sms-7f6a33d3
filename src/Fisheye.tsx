@@ -30,7 +30,7 @@ void main(){
  vec2 d=samplePx-center;
  samplePx=center+mat2(cos(angle),-sin(angle),sin(angle),cos(angle))*d;
  samplePx.y+=22.*sin(phase);
- vec2 st=(samplePx+vec2(240.,150.))/vec2(1560.,1402.);
+ vec2 st=(samplePx+vec2(240.,450.))/vec2(1560.,1702.);
  vec3 color=texture2D(scene,st).rgb;
  float fine=sin(p.y*3.08+.18*sin(p.x*.032+time));
  float beat=sin(p.y*.43+p.x*.015+sin(p.x*.004)*4.);
@@ -42,21 +42,21 @@ void main(){
 
 function drawPhone(ctx: CanvasRenderingContext2D, frame: number, fps: number) {
   ctx.fillStyle = "#000";
-  ctx.fillRect(0, 0, 1560, 1402);
+  ctx.fillRect(0, 0, 1560, 1702);
   ctx.save();
-  ctx.translate(240, 150);
+  ctx.translate(240, 450);
   ctx.fillStyle = "#111112";
-  ctx.fillRect(-240, -150, 1560, 355);
+  ctx.fillRect(-240, -450, 1560, 655);
   ctx.fillStyle = "#818a96";
   ctx.beginPath();
-  ctx.ellipse(590, -34, 130, 95, 0, 0, Math.PI * 2);
+  ctx.ellipse(590, -34, 130, 120, 0, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = "#e0e2e3";
   ctx.beginPath();
-  ctx.arc(590, -62, 38, 0, Math.PI * 2);
+  ctx.arc(590, -69, 45, 0, Math.PI * 2);
   ctx.fill();
   ctx.beginPath();
-  ctx.ellipse(590, 23, 83, 37, 0, Math.PI, 2 * Math.PI);
+  ctx.ellipse(590, 37, 83, 46, 0, Math.PI, 2 * Math.PI);
   ctx.fill();
   ctx.textAlign = "center";
   ctx.font = "56px Arial";
@@ -76,9 +76,26 @@ function drawPhone(ctx: CanvasRenderingContext2D, frame: number, fps: number) {
   ctx.font = "italic 29px Arial";
   ctx.fillStyle = "#95d3f0";
   ctx.fillText("52", -195, 69);
+  ctx.save();
+  ctx.translate(1120, -235);
   ctx.fillStyle = "#b5b5b8";
-  ctx.font = "27px Arial";
-  ctx.fillText("▥  ≋  ▰₃₄", 1220, -150);
+  for (let i = 0; i < 4; i++) ctx.fillRect(i * 12, -10 - i * 8, 8, 10 + i * 8);
+  ctx.strokeStyle = "#b5b5b8";
+  ctx.lineWidth = 5;
+  for (let i = 0; i < 3; i++) {
+    ctx.beginPath();
+    ctx.arc(80, 0, 10 + i * 12, Math.PI * 1.2, Math.PI * 1.8);
+    ctx.stroke();
+  }
+  ctx.fillStyle = "#b5b5b8";
+  ctx.beginPath();
+  ctx.roundRect(125, -34, 56, 31, 6);
+  ctx.fill();
+  ctx.fillRect(182, -25, 5, 13);
+  ctx.fillStyle = "#111112";
+  ctx.font = "bold 25px Arial";
+  ctx.fillText("34", 153, -9);
+  ctx.restore();
   ctx.fillStyle = "#88888b";
   ctx.font = "48px ReplicaSans";
   ctx.fillText("信息 · 短信", 590, 320);
@@ -87,8 +104,10 @@ function drawPhone(ctx: CanvasRenderingContext2D, frame: number, fps: number) {
   ctx.beginPath();
   ctx.roundRect(-450, 448, 1700, 500, 68);
   ctx.fill();
+  ctx.save();
+  ctx.scale(1.1, 1);
   ctx.textAlign = "left";
-  ctx.font = "76px ReplicaSans";
+  ctx.font = "80px ReplicaSans";
   ctx.fillStyle = "#e3e3e5";
   const lines = [
     "【浙江大学】欢迎您在 2026年09月04",
@@ -96,9 +115,9 @@ function drawPhone(ctx: CanvasRenderingContext2D, frame: number, fps: number) {
     "请凭支付宝 “浙大通” 小程序通行码或本人",
     "身份证进入校园。",
   ];
-  const x = -300,
-    y = 560,
-    lineHeight = 95;
+  const x = -320,
+    y = 585,
+    lineHeight = 102;
   // The reference starts revealing the marker at approximately 0.9 seconds.
   const reveal = Math.max(0, Math.min(1, (frame / fps - 0.88) / 0.58));
   const prefix = ctx.measureText("请凭支付宝 “").width;
@@ -127,6 +146,7 @@ function drawPhone(ctx: CanvasRenderingContext2D, frame: number, fps: number) {
   };
   underline(lines[0], 12, lines[0].length, 0);
   underline(lines[1], 0, 17, 1);
+  ctx.restore();
   ctx.restore();
 }
 
@@ -196,7 +216,7 @@ export const Fisheye: React.FC<FisheyeProps> = ({
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     const source = document.createElement("canvas");
     source.width = 1560;
-    source.height = 1402;
+    source.height = 1702;
     drawPhone(source.getContext("2d")!, frame, fps);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
     gl.uniform2f(gl.getUniformLocation(program, "resolution"), width, height);
